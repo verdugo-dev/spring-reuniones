@@ -1,33 +1,23 @@
 package com.carlos.reuniones.controllers;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.carlos.reuniones.models.Reunion;
+import com.carlos.reuniones.services.ReunionService;
 
 @Controller
 @RequestMapping("/reuniones")
 public class ReunionController {
 
-    private static final List<Reunion> reuniones = new ArrayList<>();
-
-    static {
-        for (int i = 1; i <= 5; i++) {
-            reuniones.add(new Reunion(i, "Reunion " + i,
-                ZonedDateTime.now().plusDays(i)
-            ));
-        }
-    }
+    @Autowired
+    private ReunionService reunionService;
 
     @GetMapping
     public String getAllReuniones(Model model) {
-        model.addAttribute("reuniones", reuniones);
+        model.addAttribute("reuniones", reunionService.getAllReuniones());
         return "reuniones";
     }
 
